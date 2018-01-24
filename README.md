@@ -1,2 +1,2 @@
-# lantern-template
+# lantern-simple-template
 lantern模版
