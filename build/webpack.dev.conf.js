@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const webpackbaseConf = require('./webpack.base.conf.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const devConfig = {
   entry: {
@@ -19,6 +20,7 @@ const devConfig = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
+    new ExtractTextPlugin("style.css")
   ],
   devServer: {
     historyApiFallback: true,

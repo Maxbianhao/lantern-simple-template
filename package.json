@@ -15,9 +15,11 @@
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "style-loader": "^0.20.2",
     "vue-loader": "^13.7.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.13",
@@ -26,7 +28,7 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
-    "lantern-ui": "^0.9.19",
+    "lantern-ui": "^0.9.21",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1"
   }

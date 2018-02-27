@@ -1,9 +1,15 @@
 const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+
+function resolve(dir) {
+  return path.join(__dirname, '..', dir);
+}
 
 const baseConfig = {
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      'src': resolve('/src')
     }
   },
   module: {
@@ -14,8 +20,14 @@ const baseConfig = {
           loader: 'vue-loader',
           options: {
             loaders: {
-              css: 'vue-style-loader!css-loader',
-              less: 'vue-style-loader!css-loader!less-loader'
+              css: ExtractTextPlugin.extract({
+                use: 'css-loader',
+                fallback: 'vue-style-loader'
+              }),
+              less: ExtractTextPlugin.extract({
+                use: ['css-loader', 'less-loader'],
+                fallback: 'vue-style-loader'
+              })
             }
           }
         }
@@ -36,7 +48,10 @@ const baseConfig = {
       },
       {
         test: /\.css$/,
-        use: 'css-loader'
+        use: ExtractTextPlugin.extract({
+          use: 'css-loader',
+          fallback: 'style-loader'
+        })
       }
     ]
   },
