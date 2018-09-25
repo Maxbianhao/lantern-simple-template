@@ -1,15 +1,20 @@
-const path = require('path');
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
+/**
+ * Created by Feng on 2017/7/15.
+ */
+var path = require('path')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 function resolve(dir) {
-  return path.join(__dirname, '..', dir);
+  return path.join(__dirname, '..', dir)
 }
 
-const baseConfig = {
+var baseConfig = {
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      'src': resolve('/src')
+      vue$: 'vue/dist/vue.common.js', // 基于 CommonJS 的完整构建
+      config: resolve('config'),
+      components: resolve('src/pc/components'),
+      libs: resolve('libs')
     }
   },
   module: {
@@ -25,8 +30,7 @@ const baseConfig = {
                 fallback: 'vue-style-loader'
               }),
               less: ExtractTextPlugin.extract({
-                use: ['css-loader', 'less-loader'],
-                fallback: 'vue-style-loader'
+                use: 'css-loader!less-loader'
               })
             }
           }
@@ -34,11 +38,11 @@ const baseConfig = {
       },
       {
         test: /\.js$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        use: 'babel-loader?cacheDirectory',
+        exclude: /node_modules(?!\/opentype.js)/
       },
       {
-        test: /\.(png|jpg|gif|svg|ttf)$/,
+        test: /\.(png|jpe?g|gif|svg|mp4)$/,
         use: {
           loader: 'file-loader',
           options: {
@@ -49,12 +53,55 @@ const baseConfig = {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          use: 'css-loader',
-          fallback: 'style-loader'
+          use: 'css-loader?minimize'
         })
+      },
+
+      {
+        test: /\.eot/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
+              limit: 10000,
+              mimetype: 'application/vnd.ms-fontobject'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.woff(\?\S*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
+              limit: 10000,
+              mimetype: 'application/font-woff'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.ttf(\?\S*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: '[name].[ext]?[hash]',
+              limit: 10000,
+              mimetype: 'application/font-ttf'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
       }
     ]
-  },
+  }
 }
 
-module.exports = baseConfig;
+module.exports = baseConfig
